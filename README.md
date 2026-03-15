@@ -1,4 +1,4 @@
-# Gerador de Itens v3 — Guia para leigos
+# Gerador de Itens v4 — Guia para leigos
 
 Este projeto funciona de 2 jeitos:
 
