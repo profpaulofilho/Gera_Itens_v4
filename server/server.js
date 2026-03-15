@@ -3,6 +3,7 @@ const app = express();
 const PORT = process.env.PORT || 10000;
 app.use(express.json({ limit: '1mb' }));
 app.use(express.static('.'));
+
 function buildPrompt(body) {
   return `Você é um especialista em elaboração de itens técnicos de Redes de Computadores.
 
@@ -13,7 +14,7 @@ Regras obrigatórias:
 4. Criar distratores plausíveis com base em erros técnicos comuns.
 5. Restringir o item ao escopo curricular informado.
 6. Quando houver norma técnica, usá-la de modo coerente, sem inventar exigências falsas.
-7. Responder apenas com JSON válido.
+7. Responder apenas com JSON válido, sem markdown, sem texto extra.
 
 Saída JSON exata:
 {
@@ -47,25 +48,47 @@ Norma técnica: ${body.norma_tecnica}
 Observações: ${body.observacoes || 'Nenhuma'}
 `;
 }
+
 app.post('/api/gerar-item', async (req, res) => {
   try {
-    if (!process.env.GEMINI_API_KEY) return res.status(500).json({ error: 'A variável GEMINI_API_KEY não foi configurada no Render.' });
+    const apiKey = process.env.ANTHROPIC_API_KEY;
+    if (!apiKey) return res.status(500).json({ error: 'A variável ANTHROPIC_API_KEY não foi configurada no Render.' });
+
     const prompt = buildPrompt(req.body || {});
-    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${process.env.GEMINI_API_KEY}`, {
+
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': apiKey,
+        'anthropic-version': '2023-06-01'
+      },
       body: JSON.stringify({
-        contents: [{ parts: [{ text: prompt }] }],
-        generationConfig: { temperature: 0.6, responseMimeType: 'application/json' }
+        model: 'claude-haiku-4-5-20251001',
+        max_tokens: 2000,
+        messages: [{ role: 'user', content: prompt }]
       })
     });
+
     const data = await response.json();
-    if (!response.ok) return res.status(response.status).json({ error: data.error?.message || 'Erro na API Gemini', raw: data });
-    const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
-    if (!text) return res.status(500).json({ error: 'A resposta do Gemini veio vazia.' });
-    res.json(JSON.parse(text));
+
+    if (!response.ok) {
+      return res.status(response.status).json({
+        error: data.error?.message || 'Erro na API Anthropic',
+        raw: data
+      });
+    }
+
+    const text = data.content?.[0]?.text;
+    if (!text) return res.status(500).json({ error: 'A resposta do Claude veio vazia.' });
+
+    // Limpar possível markdown antes de parsear
+    const clean = text.replace(/```json|```/g, '').trim();
+    res.json(JSON.parse(clean));
+
   } catch (error) {
     res.status(500).json({ error: error.message || 'Erro interno.' });
   }
 });
-app.listen(PORT, () => console.log(`Servidor iniciado na porta ${PORT}`));
+
+app.listen(PORT, () => console.log(`Servidor iniciado na porta ${PORT} | API: anthropic`));
