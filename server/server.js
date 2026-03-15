@@ -1,8 +1,12 @@
 import express from 'express';
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 const app = express();
 const PORT = process.env.PORT || 10000;
 app.use(express.json({ limit: '1mb' }));
-app.use(express.static('.'));
+app.use(express.static(join(__dirname, '..')));
 
 function buildPrompt(body) {
   return `Você é um especialista em elaboração de itens técnicos de Redes de Computadores.
@@ -86,9 +90,4 @@ app.post('/api/gerar-item', async (req, res) => {
     const clean = text.replace(/```json|```/g, '').trim();
     res.json(JSON.parse(clean));
 
-  } catch (error) {
-    res.status(500).json({ error: error.message || 'Erro interno.' });
-  }
-});
-
-app.listen(PORT, () => console.log(`Servidor iniciado na porta ${PORT} | API: anthropic`));
+  } catch
