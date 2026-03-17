@@ -1,87 +1,127 @@
-# Gerador de Itens v4 — Guia para leigos
+# 📋 Elaborador de Itens
 
-Este projeto funciona de 2 jeitos:
+> Gerador de itens avaliativos com IA — Metodologia Cebraspe · Taxonomia de Bloom  
+> Multi-institucional: SENAC, SENAI, ou qualquer curso técnico
 
-1. **Modo Local**
-   - Não precisa de API.
-   - Você abre o site e já consegue gerar itens por regras e templates.
+---
 
-2. **Modo Gemini**
-   - Usa sua chave do Gemini.
-   - Gera itens com mais variedade.
-   - Precisa publicar no Render para funcionar online com backend.
+## 🚀 Como usar localmente
 
-## Parte 1 — Testar no seu computador
+### Pré-requisitos
+- [Node.js 18+](https://nodejs.org) instalado
+- Conta na [Anthropic](https://console.anthropic.com) para obter chave de API
 
-1. Baixe o ZIP e descompacte.
-2. Abra a pasta do projeto.
-3. Clique duas vezes em `index.html`.
-4. O sistema abrirá no navegador.
-5. Deixe o campo **Modo** como **Local**.
-6. Preencha os dados e clique em **Gerar item**.
+### Instalação
 
-## Parte 2 — Publicar no Render
+```bash
+# 1. Clone o repositório
+git clone https://github.com/profpaulofilho/elaborador-itens.git
+cd elaborador-itens
 
-### Passo 1 — Criar conta no GitHub
-1. Acesse o GitHub.
-2. Crie sua conta.
-3. Faça login.
+# 2. Instale as dependências
+npm install
 
-### Passo 2 — Criar o repositório
-1. Clique em **New repository**.
-2. Dê um nome, por exemplo: `gerador-itens-redes`.
-3. Deixe como **Public**.
-4. Clique em **Create repository**.
+# 3. Configure a chave de API
+cp .env.example .env.local
+# Edite .env.local e coloque sua chave:
+# REACT_APP_ANTHROPIC_KEY=sk-ant-...
 
-### Passo 3 — Subir os arquivos
-1. Entre no repositório criado.
-2. Clique em **uploading an existing file**.
-3. Arraste todos os arquivos da pasta do projeto.
-4. Clique em **Commit changes**.
+# 4. Inicie o servidor de desenvolvimento
+npm start
+```
 
-### Passo 4 — Criar conta no Render
-1. Acesse o Render.
-2. Faça login com GitHub.
+---
 
-### Passo 5 — Criar o serviço
-1. Clique em **New +**.
-2. Escolha **Web Service**.
-3. Selecione o repositório que você criou.
+## 🌐 Deploy no GitHub Pages
 
-### Passo 6 — Configurar o serviço
-Use estes valores:
+```bash
+# 1. Edite package.json — troque SEU_USUARIO pelo seu usuário GitHub:
+# "homepage": "https://profpaulofilho.github.io/elaborador-itens"
 
-- **Name**: `gerador-itens-redes`
-- **Environment**: `Node`
-- **Build Command**: `npm install`
-- **Start Command**: `npm start`
+# 2. Faça o deploy
+npm run deploy
+```
 
-Depois clique em **Create Web Service**.
+⚠️ **ATENÇÃO:** O GitHub Pages é estático — não há backend.  
+Para usar a API Anthropic em produção com segurança, configure um backend proxy (ex: Vercel, Railway) e nunca exponha sua chave no código-fonte.
 
-### Passo 7 — Configurar a chave do Gemini
-1. No painel do Render, abra seu serviço.
-2. Vá em **Environment**.
-3. Crie a variável:
-   - **Key**: `GEMINI_API_KEY`
-   - **Value**: sua chave
-4. Salve.
-5. Faça um novo deploy se o Render solicitar.
+---
 
-### Passo 8 — Usar online
-1. Abra o endereço gerado pelo Render.
-2. Troque o modo para **Gemini**.
-3. Gere seu item.
+## 📁 Estrutura do projeto
 
-## Arquivos principais
-- `index.html`: interface do sistema
-- `styles.css`: aparência visual
-- `course-data.js`: banco das UCs, habilidades e conhecimentos
-- `app.js`: lógica do formulário, histórico e exportações
-- `server/server.js`: backend que conversa com o Gemini
-- `package.json`: dependências do Node
-- `render.yaml`: configuração básica para o Render
+```
+elaborador-itens/
+├── public/
+│   └── index.html          ← Entrada HTML
+├── src/
+│   ├── App.jsx             ← Componente principal (toda a lógica)
+│   └── index.js            ← Entry point React
+├── .env.example            ← Modelo de variáveis de ambiente
+├── .gitignore
+├── package.json
+└── README.md
+```
 
-## Importante
-- Se a chave do Gemini não estiver configurada, o modo **Gemini** não funciona.
-- O modo **Local** continua funcionando mesmo sem internet.
-- Os itens do histórico ficam salvos no navegador do computador.
+---
+
+## ➕ Adicionar novo banco de fichas (nova instituição)
+
+No arquivo `src/App.jsx`, localize o objeto `BANCOS_FICHAS` e adicione um novo banco seguindo o padrão:
+
+```js
+"SENAI_MG_INFORMATICA": {
+  label: "SENAI MG — Técnico em Informática",
+  area: "Tecnologia da Informação",
+  subarea: "Desenvolvimento de Sistemas",
+  cargaHoraria: "1200h",
+  ucs: {
+    "Nome da UC": {
+      qualificacao: "Nome da Qualificação",
+      cargaHoraria: "80h",
+      competencia: "Texto da competência conforme plano de curso.",
+      indicadores: [
+        "Indicador 1...",
+        "Indicador 2...",
+      ],
+      conhecimentos: [
+        "Conhecimento 1...",
+        "Conhecimento 2...",
+      ],
+      habilidades: [
+        "Habilidade 1...",
+        "Habilidade 2...",
+      ],
+    },
+  },
+},
+```
+
+---
+
+## 🎯 Bancos disponíveis atualmente
+
+| Código | Instituição | Curso | C/H |
+|--------|------------|-------|-----|
+| `SENAC_SP_REDES` | SENAC SP | Técnico em Redes de Computadores (PC 296) | 1000h |
+| `PERSONALIZADO` | Qualquer | Configuração manual livre | — |
+
+---
+
+## ✅ Funcionalidades
+
+- Geração de itens completos via IA (Claude Sonnet)
+- Ficha completa com situação-estímulo, comando e 4 alternativas
+- Validação metodológica Cebraspe (8 critérios)
+- Classificação pela Taxonomia de Bloom (nível, processo, conhecimento)
+- Justificativa técnica para cada alternativa
+- Download da ficha em HTML (pronta para impressão)
+- Histórico de até 50 itens por sessão
+- Suporte multi-institucional (campo Banco/Instituição editável)
+- Dados do SENAC SP alinhados ao Plano de Curso nº 296
+
+---
+
+## 👤 Autor
+
+**Paulo Filho** — 2026  
+paulosilvafilhoba@gmail.com
