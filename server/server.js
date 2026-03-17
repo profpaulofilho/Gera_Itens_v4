@@ -3,37 +3,94 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const __dirname  = path.dirname(__filename);
 
-const app = express();
+const app  = express();
 const PORT = process.env.PORT || 10000;
 
-app.use(express.json({ limit: '1mb' }));
+app.use(express.json({ limit: '4mb' }));
 
-// Serve arquivos estáticos da raiz do projeto (um nível acima de /server)
 const rootDir = path.resolve(__dirname, '..');
 app.use(express.static(rootDir));
 
+// ─── PROMPT ─────────────────────────────────────────────────────────────────
 function buildPrompt(body) {
-  return `Você é um especialista em elaboração de itens técnicos de Redes de Computadores.
+  const anexo = body.anexo
+    ? `\n\nDOCUMENTO COMPLEMENTAR ANEXADO PELO ELABORADOR:\n${body.anexo.slice(0, 3000)}\n`
+    : '';
 
-Regras obrigatórias:
-1. Avaliar apenas uma habilidade.
-2. Produzir situação-estímulo, comando dependente do contexto, 4 alternativas homogêneas, gabarito e justificativas A a D.
-3. Garantir que sem o contexto o comando não seja corretamente resolvível.
-4. Criar distratores plausíveis com base em erros técnicos comuns.
-5. Restringir o item ao escopo curricular informado.
-6. Quando houver norma técnica, usá-la de modo coerente, sem inventar exigências falsas.
-7. Responder apenas com JSON válido, sem markdown, sem texto extra.
+  return `Você é um especialista em elaboração de itens de múltipla escolha para o Curso Técnico em Redes de Computadores do SENAC, seguindo rigorosamente a metodologia Cebraspe e a Taxonomia de Bloom Revisada.
 
-Saída JSON exata:
+═══════════════════════════════════════════════
+REGRAS METODOLÓGICAS OBRIGATÓRIAS (Cebraspe)
+═══════════════════════════════════════════════
+1. Avaliar apenas UMA habilidade por item.
+2. Produzir a tríade obrigatória: SITUAÇÃO-ESTÍMULO → COMANDO → ALTERNATIVAS.
+3. A situação-estímulo deve criar o problema de forma objetiva, profissional e funcional.
+4. O comando deve ser continuação DIRETA da situação-estímulo — nunca autossuficiente.
+5. Sem o contexto da situação-estímulo, o aluno NÃO deve conseguir resolver corretamente.
+6. O comando deve retomar elementos concretos do contexto.
+7. As 4 alternativas devem ser HOMOGÊNEAS (mesmo universo conceitual, mesma extensão, mesmo tipo de resposta).
+8. Os distratores devem ser plausíveis, baseados em erros técnicos reais comuns.
+9. A dificuldade deve vir da tarefa cognitiva — NUNCA de pegadinha, ambiguidade ou texto excessivo.
+10. Citar norma técnica quando útil (TIA/EIA-568, TIA-569, TIA-606, etc.).
+11. Sustentar a justificativa técnica da alternativa correta e de CADA distrator.
+
+═══════════════════════════════════════════════
+TAXONOMIA DE BLOOM REVISADA — REFERÊNCIA
+═══════════════════════════════════════════════
+Nível "${body.bloom_nivel}" / Processo "${body.bloom_processo}" / Conhecimento "${body.bloom_conhecimento}":
+- Lembrar (Reconhecer/Recordar) → identificar, listar, definir
+- Compreender (Interpretar/Classificar/Inferir…) → descrever, distinguir, relacionar
+- Aplicar (Executar/Implementar) → usar procedimentos em situações concretas
+- Analisar (Diferenciar/Organizar/Atribuir) → decompor, comparar cenários, diagnosticar
+- Avaliar (Verificar/Criticar) → julgar soluções, validar configurações
+- Criar (Gerar/Planejar/Produzir) → elaborar projetos, propor soluções novas
+
+Tipos de conhecimento:
+- Factual: terminologia e fatos básicos
+- Conceitual: princípios, teorias e modelos
+- Procedural: como fazer — técnicas, métodos, critérios
+- Metacognitivo: conhecimento sobre o próprio aprendizado
+
+═══════════════════════════════════════════════
+DADOS DA FICHA
+═══════════════════════════════════════════════
+Banco:            ${body.banco}
+ID da ficha:      ${body.fichaId}
+Elaborador:       ${body.elaborador}
+Área:             ${body.area}
+Competência:      ${body.competencia_id} — ${body.competencia}
+Habilidade:       ${body.habilidade_id} — ${body.habilidade}
+Conhecimento:     ${body.conhecimento}
+Tipo do item:     Múltipla escolha — 4 opções
+Bloom – Nível:    ${body.bloom_nivel}
+Bloom – Processo: ${body.bloom_processo}
+Bloom – Conhecimento: ${body.bloom_conhecimento}
+Dificuldade:      ${body.dificuldade}
+Observações:      ${body.observacoes || 'Nenhuma'}
+${anexo}
+
+═══════════════════════════════════════════════
+SAÍDA — APENAS JSON VÁLIDO, SEM MARKDOWN, SEM TEXTO EXTRA
+═══════════════════════════════════════════════
 {
-  "analise": "...",
-  "situacao": "...",
-  "comando": "...",
-  "alternativas": {"A": "...", "B": "...", "C": "...", "D": "..."},
+  "analise": "Texto da análise metodológica explicando a habilidade-alvo, o cenário e as escolhas de construção.",
+  "situacao": "Texto da situação-estímulo: contexto profissional realista, objetivo e necessário.",
+  "comando": "Texto do comando: continuação direta da situação-estímulo, dependente do contexto.",
+  "alternativas": {
+    "A": "Texto da alternativa A",
+    "B": "Texto da alternativa B",
+    "C": "Texto da alternativa C",
+    "D": "Texto da alternativa D"
+  },
   "gabarito": "A",
-  "justificativas": {"A": "...", "B": "...", "C": "...", "D": "..."},
+  "justificativas": {
+    "A": "Por que A é correta ou incorreta (com fundamento técnico).",
+    "B": "Por que B é correta ou incorreta (com fundamento técnico).",
+    "C": "Por que C é correta ou incorreta (com fundamento técnico).",
+    "D": "Por que D é correta ou incorreta (com fundamento técnico)."
+  },
   "validacao": {
     "contexto_funcional": true,
     "comando_depende_contexto": true,
@@ -44,26 +101,15 @@ Saída JSON exata:
     "distratores_plausiveis": true,
     "justificativa_sustentada": true
   }
+}`;
 }
 
-Dados do item:
-UC: ${body.uc} - ${body.uc_nome}
-Competência: ${body.competencia}
-Habilidade: ${body.habilidade}
-Conhecimento relacionado: ${body.conhecimento}
-Bloom: ${body.bloom_nivel} | ${body.bloom_processo} | ${body.bloom_conhecimento}
-Dificuldade: ${body.dificuldade}
-Tipo de conhecimento: ${body.tipo_conhecimento}
-Norma técnica: ${body.norma_tecnica}
-Observações: ${body.observacoes || 'Nenhuma'}
-`;
-}
-
+// ─── ROTA ────────────────────────────────────────────────────────────────────
 app.post('/api/gerar-item', async (req, res) => {
   try {
     const apiKey = process.env.ANTHROPIC_API_KEY;
     if (!apiKey) {
-      return res.status(500).json({ error: 'A variável ANTHROPIC_API_KEY não foi configurada no Render.' });
+      return res.status(500).json({ error: 'ANTHROPIC_API_KEY não configurada no Render.' });
     }
 
     const prompt = buildPrompt(req.body || {});
@@ -76,8 +122,8 @@ app.post('/api/gerar-item', async (req, res) => {
         'anthropic-version': '2023-06-01'
       },
       body: JSON.stringify({
-        model: 'claude-haiku-4-5-20251001',
-        max_tokens: 2000,
+        model:      'claude-haiku-4-5-20251001',
+        max_tokens: 2500,
         messages: [{ role: 'user', content: prompt }]
       })
     });
@@ -92,7 +138,7 @@ app.post('/api/gerar-item', async (req, res) => {
     }
 
     const text = data.content?.[0]?.text;
-    if (!text) return res.status(500).json({ error: 'A resposta do Claude veio vazia.' });
+    if (!text) return res.status(500).json({ error: 'Resposta vazia do Claude.' });
 
     const clean = text.replace(/```json|```/g, '').trim();
     res.json(JSON.parse(clean));
@@ -102,4 +148,6 @@ app.post('/api/gerar-item', async (req, res) => {
   }
 });
 
-app.listen(PORT, () => console.log(`Servidor iniciado na porta ${PORT} | API: anthropic`));
+app.listen(PORT, () =>
+  console.log(`Servidor v5 iniciado na porta ${PORT} | modelo: claude-haiku-4-5-20251001`)
+);

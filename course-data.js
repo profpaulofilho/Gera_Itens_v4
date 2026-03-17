@@ -1,13 +1,61 @@
 window.COURSE_DATA = {
-  course: 'Técnico em Redes de Computadores',
-  ucs: [
-    { id:'UC1', nome:'Fundamentos de redes de computadores', competencia:'Compreender fundamentos, topologias, dispositivos e modelos de referência de redes.', habilidades:['Identificar componentes físicos e lógicos de uma rede','Relacionar topologias de rede a cenários de uso','Interpretar o modelo OSI e TCP/IP em situações práticas'], conhecimentos:['Topologias LAN','Modelo OSI','Modelo TCP/IP','Dispositivos de rede'], normas:['Não se aplica','Boas práticas de documentação']},
-    { id:'UC2', nome:'Endereçamento e serviços de rede', competencia:'Configurar endereçamento IP e serviços básicos de rede.', habilidades:['Planejar endereçamento IPv4 em sub-redes','Configurar serviços básicos de rede','Validar conectividade lógica entre hosts'], conhecimentos:['IPv4','Máscara de sub-rede','DHCP','DNS'], normas:['Não se aplica']},
-    { id:'UC3', nome:'Switching e VLAN', competencia:'Configurar redes locais com comutação, segmentação e documentação técnica.', habilidades:['Configurar VLANs em switches gerenciáveis','Validar trunk e portas de acesso','Documentar segmentação lógica da rede'], conhecimentos:['VLAN','Trunk','Switch gerenciável','Tabela MAC'], normas:['Boas práticas de documentação']},
-    { id:'UC4', nome:'Roteamento básico', competencia:'Implementar roteamento entre redes locais.', habilidades:['Configurar roteamento estático','Validar comunicação entre sub-redes','Identificar falhas de gateway e rotas'], conhecimentos:['Roteamento estático','Gateway padrão','Tabela de rotas'], normas:['Não se aplica']},
-    { id:'UC5', nome:'Wi‑Fi e mobilidade', competencia:'Implementar redes sem fio com critérios de cobertura e segurança.', habilidades:['Selecionar padrão Wi‑Fi adequado ao cenário','Planejar cobertura e SSID','Aplicar segurança básica em WLAN'], conhecimentos:['802.11','SSID','WPA2/WPA3','Cobertura'], normas:['Boas práticas de instalação']},
-    { id:'UC6', nome:'Segurança básica em redes', competencia:'Aplicar controles básicos de segurança em infraestrutura de redes.', habilidades:['Identificar riscos básicos em rede local','Aplicar segmentação e boas práticas','Documentar medidas preventivas'], conhecimentos:['ACL','Segmentação','Segurança física','Privilégios'], normas:['Política de segurança interna']},
-    { id:'UC7', nome:'Implementar cabeamento estruturado e telefonia IP', competencia:'Implementar infraestrutura de cabeamento estruturado e soluções de telefonia IP em redes corporativas.', habilidades:['Interpretar projetos de cabeamento estruturado para redes de computadores','Planejar a infraestrutura física da rede (racks, patch panels, canaletas, eletrocalhas)','Identificar e selecionar cabos e conectores adequados (UTP, STP, fibra óptica, RJ-45)','Executar montagem e conectorização de cabos de rede (crimpagem)','Instalar pontos de rede, patch panels e racks','Organizar e realizar gerenciamento de cabos (cable management)','Executar testes de certificação e continuidade do cabeamento','Realizar manutenção preventiva e corretiva em cabeamento estruturado','Configurar e instalar telefonia IP (VoIP)','Integrar telefonia IP à infraestrutura de rede existente','Configurar dispositivos de comunicação VoIP (softphones, telefones IP, ATA, PABX IP)','Realizar testes de funcionamento e qualidade de serviço (QoS) em telefonia IP','Elaborar documentação técnica da infraestrutura de rede'], conhecimentos:['Conceito de cabeamento estruturado','Norma TIA/EIA-568','Norma TIA-569','Norma TIA-606','Subsistemas do cabeamento estruturado','Cabeamento horizontal','Backbone','Área de trabalho','Sala de equipamentos','Entrada de serviços','Cabos UTP','Cabos STP','Cabos FTP','Fibra óptica','Categorias Cat5e','Categorias Cat6','Categorias Cat6a','Conector RJ-45','Keystone','Patch cord','Racks','Patch panels','Organizadores de cabos','Topologias LAN','Ferramentas de crimpagem','Punch down','Testadores de cabos','VoIP','Arquitetura de PABX IP','SIP','RTP','H.323','Telefones IP','Gateways ATA','Softphones','QoS para voz','Integração voz e dados','Segurança básica em VoIP'], normas:['TIA/EIA-568','TIA-569','TIA-606','Boas práticas de documentação','QoS corporativo']},
-    { id:'UC8', nome:'Documentação e suporte', competencia:'Registrar tecnicamente a infraestrutura e prestar suporte básico ao ambiente de redes.', habilidades:['Elaborar documentação técnica de rede','Registrar ocorrências e evidências','Organizar inventário de ativos de rede'], conhecimentos:['Inventário','Topologia lógica','Topologia física','Registro técnico'], normas:['Boas práticas de documentação']}
-  ]
+  curso: 'Técnico em Redes de Computadores',
+  banco: 'SENAC_MG_24_ENTRADA',
+  metodologia: 'Cebraspe',
+
+  competencias: [
+    { id:'C1',  texto:'Planejar e executar a instalação de redes locais de computadores.' },
+    { id:'C2',  texto:'Planejar e executar a manutenção de redes locais de computadores.' },
+    { id:'C3',  texto:'Planejar e executar a instalação, a configuração e o monitoramento de sistemas operacionais de redes locais (servidores).' },
+    { id:'C4',  texto:'Implementar protocolos de rede em roteadores e switches.' },
+    { id:'C5',  texto:'Implementar roteamento e switching.' },
+    { id:'C6',  texto:'Planejar e executar a manutenção de servidores.' },
+    { id:'C7',  texto:'Implementar cabeamento estruturado e telefonia IP.' },
+    { id:'C8',  texto:'Implementar política de administração de redes e serviços de disponibilidade.' },
+    { id:'C9',  texto:'Planejar e implementar a segurança física e lógica em redes de computadores.' },
+    { id:'C10', texto:'Planejar e implementar a segurança em redes sem fio.' },
+    { id:'C11', texto:'Planejar e implementar a criptografia de dados e certificados digitais.' },
+    { id:'C12', texto:'Planejar e implementar a segurança em servidores Windows e Linux.' },
+    { id:'C13', texto:'Implantar etapas de gerenciamento de projetos e governança de processos em TI.' }
+  ],
+
+  habilidades: [
+    { id:'HAB1', texto:'Organizando o próprio trabalho de acordo com as prioridades das atividades e dos prazos.' },
+    { id:'HAB2', texto:'Selecionando informações necessárias ao desenvolvimento do seu trabalho por meio de conhecimento sobre técnicas, processos e procedimentos.' },
+    { id:'HAB3', texto:'Executando as atividades com qualidade, atenção e precisão.' },
+    { id:'HAB4', texto:'Utilizando ferramentas e equipamentos específicos da área de redes conforme normas e procedimentos técnicos.' },
+    { id:'HAB5', texto:'Identificando e solucionando problemas técnicos com base em diagnóstico sistemático.' },
+    { id:'HAB6', texto:'Documentando e registrando procedimentos, configurações e resultados de forma clara e organizada.' },
+    { id:'HAB7', texto:'Aplicando normas de segurança do trabalho e saúde ocupacional nas atividades técnicas.' },
+    { id:'HAB8', texto:'Comunicando-se de forma clara e objetiva com equipes e usuários no ambiente profissional.' }
+  ],
+
+  conhecimentos: {
+    C1:  ['CON1 – Sistema operacional: instalação para configuração de redes locais. Compartilhamento de pastas. Recursos periféricos.','CON2 – Topologias de rede: estrela, barramento, anel e malha.','CON3 – Dispositivos de rede: switch, roteador, hub, access point e placa de rede.','CON4 – Endereçamento IP: IPv4, máscara de sub-rede, gateway e DNS.','CON5 – Cabeamento estruturado: categorias de cabos, crimpagem e padrões TIA/EIA-568.'],
+    C2:  ['CON6 – Diagnóstico de falhas: ferramentas ping, tracert, ipconfig e netstat.','CON7 – Manutenção preventiva e corretiva em equipamentos de rede.','CON8 – Substituição e atualização de componentes de rede.'],
+    C3:  ['CON9 – Instalação e configuração de Windows Server e Linux Server.','CON10 – Serviços de rede: DNS, DHCP, servidor de arquivos e impressão.','CON11 – Monitoramento de servidores: logs, desempenho e disponibilidade.','CON12 – Virtualização: conceitos e ambientes virtualizados.'],
+    C4:  ['CON13 – Modelo OSI: camadas e funções.','CON14 – Modelo TCP/IP: camadas e protocolos.','CON15 – Protocolos de rede: ARP, ICMP, TCP, UDP, HTTP, FTP, SMTP.','CON16 – Configuração básica de switches e roteadores Cisco via CLI.'],
+    C5:  ['CON17 – VLANs e trunking 802.1Q.','CON18 – Roteamento estático e dinâmico: RIP, OSPF.','CON19 – STP e RSTP: prevenção de loops.','CON20 – Roteamento inter-VLAN.'],
+    C6:  ['CON21 – Backup e recuperação de dados em servidores.','CON22 – Hardening e atualizações de segurança em servidores.','CON23 – Gerenciamento de usuários, grupos e permissões.'],
+    C7:  ['CON24 – Normas de cabeamento: TIA/EIA-568, TIA-569, TIA-606.','CON25 – Subsistemas do cabeamento estruturado.','CON26 – VoIP: conceitos, protocolos SIP e RTP, dispositivos IP.','CON27 – QoS para voz em redes IP.'],
+    C8:  ['CON28 – SNMP e monitoramento de redes.','CON29 – Alta disponibilidade: redundância, failover e balanceamento de carga.','CON30 – Gerenciamento de endereços e serviços de rede (DNS, DHCP, NTP).'],
+    C9:  ['CON31 – Fundamentos de segurança da informação: tríade CIA.','CON32 – Controle de acesso físico e lógico.','CON33 – Firewalls: stateful, NGFW e ACLs.','CON34 – IDS e IPS: detecção e prevenção de intrusão.'],
+    C10: ['CON35 – Padrões IEEE 802.11 e frequências.','CON36 – Protocolos de segurança Wi-Fi: WEP, WPA, WPA2, WPA3.','CON37 – Ataques a redes sem fio e contramedidas.','CON38 – Autenticação 802.1X em redes sem fio.'],
+    C11: ['CON39 – Criptografia simétrica e assimétrica: AES, RSA.','CON40 – PKI: autoridades certificadoras, certificados digitais e assinatura digital.','CON41 – Protocolos seguros: HTTPS, SSH, TLS/SSL.','CON42 – VPN: conceitos, IPSec e SSL VPN.'],
+    C12: ['CON43 – Hardening de Windows Server: políticas de grupo, auditoria e controle de acesso.','CON44 – Hardening de Linux: permissões, firewall (iptables/ufw) e serviços mínimos.','CON45 – Gestão de vulnerabilidades e patches em servidores.'],
+    C13: ['CON46 – ITIL: gestão de incidentes, problemas, mudanças e configuração.','CON47 – Metodologias de projetos: PMBOK e metodologias ágeis.','CON48 – Governança de TI: COBIT e ISO/IEC 20000.','CON49 – Documentação técnica e relatórios de TI.']
+  },
+
+  bloomNiveis: ['Lembrar','Compreender','Aplicar','Analisar','Avaliar','Criar'],
+
+  bloomProcessos: {
+    'Lembrar':     ['Reconhecer','Recordar'],
+    'Compreender': ['Interpretar','Exemplificar','Classificar','Resumir','Inferir','Comparar','Explicar'],
+    'Aplicar':     ['Executar','Implementar'],
+    'Analisar':    ['Diferenciar','Organizar','Atribuir'],
+    'Avaliar':     ['Verificar','Criticar'],
+    'Criar':       ['Gerar','Planejar','Produzir']
+  },
+
+  dimensoesConhecimento: ['Factual','Conceitual','Procedural','Metacognitivo']
 };
